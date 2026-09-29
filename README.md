@@ -100,7 +100,18 @@ git commit -m "feat: 1주차 콘솔 게시판 구현"
 git push origin feature/1주차-{본인이름}
 ```
 
-이후 GitHub에서 `main`을 대상으로 PR을 생성하고, 아래 [PR 템플릿](#pr-템플릿)을 채워 제출합니다. 주차가 바뀌면 `week2/{본인이름}/`처럼 새 폴더에서 시작하되, **직전 주차 폴더의 코드를 복사해와서 이어서 작업**해주세요.
+이후 GitHub에서 `main`을 대상으로 PR을 생성하고, 아래 [PR 템플릿](#pr-템플릿)을 채워 제출합니다. 제출한 PR은 리뷰 후 `main`에 머지됩니다.
+
+주차가 바뀌면 최신 `main`을 받아서 새 브랜치를 만들고, `week2/{본인이름}/`처럼 새 폴더에서 시작하되 **직전 주차 폴더의 코드를 복사해와서 이어서 작업**해주세요.
+
+```bash
+git checkout main
+git pull origin main
+
+git checkout -b feature/2주차-{본인이름}
+mkdir -p week2
+cp -r week1/{본인이름} week2/{본인이름}
+```
 
 ## 브랜치 · 커밋 컨벤션
 
