@@ -1,0 +1,52 @@
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== IntelliJ IDEA =====
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# ===== VS Code / Eclipse =====
+.vscode/
+.settings/
+.project
+.classpath
+bin/
+
+# ===== Gradle =====
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ===== Maven =====
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ===== Java =====
+*.class
+*.log
+hs_err_pid*
+
+# ===== Secrets (절대 커밋 금지) =====
+# DB 비밀번호, AWS 키 등은 아래 파일에 두고 커밋하지 않습니다
+.env
+.env.*
+application-secret.yml
+application-secret.properties
+application-local.yml
+application-local.properties
+# EC2 키 페어
+*.pem
+*.ppk
+
+# ===== Local DB =====
+*.db
+*.mv.db
+*.trace.db
