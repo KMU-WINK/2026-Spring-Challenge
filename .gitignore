@@ -50,3 +50,7 @@ application-local.properties
 *.db
 *.mv.db
 *.trace.db
+.idea/
+out/
+*.iml
+build/
