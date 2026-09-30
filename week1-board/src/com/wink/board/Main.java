@@ -109,6 +109,7 @@ public class Main {
         System.out.println("작성자: " + post.getWriter());
         System.out.println("내용: " + post.getContent());
         System.out.println("좋아요: " + post.getLikeCount());
+        System.out.println("작성 시간: " + post.getCreatedAt());
     }
 
     private static void update() {
