@@ -33,6 +33,16 @@ public class Post {
     public int getLikeCount() { return likeCount; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 
+    // 목록·상세에 보일 제목. Notice가 오버라이딩한다
+    public String displayTitle() {
+        return title;
+    }
+
+    // instanceof로 타입을 묻지 않고, 객체에게 직접 물어본다
+    public boolean isNotice() {
+        return false;
+    }
+
     // 행동 (setter 대신)
     public void update(String title, String content) {
         validateTitle(title);   // 작성할 때와 같은 규칙을 수정할 때도 적용

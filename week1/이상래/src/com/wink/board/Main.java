@@ -32,6 +32,7 @@ public class Main {
                     case "5" -> delete();
                     case "6" -> like();
                     case "7" -> search();
+                    case "8" -> createNotice();
                     case "0" -> {
                         System.out.println("종료합니다.");
                         return;
@@ -47,7 +48,7 @@ public class Main {
     private static void printMenu() {
         System.out.println("\n=== 커뮤니티 게시판 ===");
         System.out.println("1. 작성  2. 전체조회  3. 상세조회");
-        System.out.println("4. 수정  5. 삭제      6. 좋아요  7. 검색  0. 종료");
+        System.out.println("4. 수정  5. 삭제      6. 좋아요  7. 검색  8. 공지작성  0. 종료");
         System.out.print("선택 > ");
     }
 
@@ -61,6 +62,18 @@ public class Main {
 
         Post post = postService.create(title, content, writer);
         System.out.println("✅ 등록 완료! id=" + post.getId());
+    }
+
+    private static void createNotice() {
+        System.out.print("제목: ");
+        String title = sc.nextLine();
+        System.out.print("내용: ");
+        String content = sc.nextLine();
+        System.out.print("작성자: ");
+        String writer = sc.nextLine();
+
+        Post notice = postService.createNotice(title, content, writer);
+        System.out.println("✅ 공지 등록 완료! id=" + notice.getId());
     }
 
     private static void findAll() {
@@ -81,14 +94,14 @@ public class Main {
         }
         for (Post post : posts) {
             System.out.printf("[%d]%s (%s) ♥%d%n",
-                    post.getId(), post.getTitle(), post.getWriter(), post.getLikeCount());
+                    post.getId(), post.displayTitle(), post.getWriter(), post.getLikeCount());
         }
     }
 
     private static void findOne() {
         Post post = postService.findById(inputId());
         System.out.println("─────────────");
-        System.out.println("제목: " + post.getTitle());
+        System.out.println("제목: " + post.displayTitle());
         System.out.println("작성자: " + post.getWriter());
         System.out.println("내용: " + post.getContent());
         System.out.println("좋아요: " + post.getLikeCount());
