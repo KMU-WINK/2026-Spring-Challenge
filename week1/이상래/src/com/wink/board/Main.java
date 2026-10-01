@@ -31,6 +31,7 @@ public class Main {
                     case "4" -> update();
                     case "5" -> delete();
                     case "6" -> like();
+                    case "7" -> search();
                     case "0" -> {
                         System.out.println("종료합니다.");
                         return;
@@ -46,7 +47,7 @@ public class Main {
     private static void printMenu() {
         System.out.println("\n=== 커뮤니티 게시판 ===");
         System.out.println("1. 작성  2. 전체조회  3. 상세조회");
-        System.out.println("4. 수정  5. 삭제      6. 좋아요  0. 종료");
+        System.out.println("4. 수정  5. 삭제      6. 좋아요  7. 검색  0. 종료");
         System.out.print("선택 > ");
     }
 
@@ -63,7 +64,17 @@ public class Main {
     }
 
     private static void findAll() {
-        List<Post> posts = postService.findAll();
+        printList(postService.findAll());
+    }
+
+    private static void search() {
+        System.out.print("검색어: ");
+        String keyword = sc.nextLine();
+        printList(postService.search(keyword));
+    }
+
+    // 전체 조회와 검색 결과가 같은 형식으로 출력되도록 묶음
+    private static void printList(List<Post> posts) {
         if (posts.isEmpty()) {
             System.out.println("게시글이 없습니다.");
             return;

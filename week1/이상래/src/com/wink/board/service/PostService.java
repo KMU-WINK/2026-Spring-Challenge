@@ -1,6 +1,7 @@
 package com.wink.board.service;
 
 import com.wink.board.domain.Post;
+import com.wink.board.exception.InvalidPostException;
 import com.wink.board.exception.PostNotFoundException;
 import com.wink.board.repository.PostRepository;
 
@@ -24,6 +25,17 @@ public class PostService {
 
     public List<Post> findAll() {
         return postRepository.findAll();
+    }
+
+    // 저장소에 검색 메서드를 추가하지 않고 서비스에서 거른다
+    // → 저장소를 갈아끼워도 검색 기능은 그대로 동작
+    public List<Post> search(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            throw new InvalidPostException("검색어를 입력해주세요.");
+        }
+        return findAll().stream()
+                .filter(post -> post.getTitle().contains(keyword))
+                .toList();
     }
 
     public Post findById(Long id) {
