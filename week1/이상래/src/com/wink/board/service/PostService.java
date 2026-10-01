@@ -1,6 +1,7 @@
 package com.wink.board.service;
 
 import com.wink.board.domain.Post;
+import com.wink.board.exception.PostNotFoundException;
 import com.wink.board.repository.PostRepository;
 
 import java.util.List;
@@ -27,8 +28,7 @@ public class PostService {
 
     public Post findById(Long id) {
         return postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "존재하지 않는 게시글입니다. id=" + id));
+                .orElseThrow(() -> new PostNotFoundException(id));
     }
 
     public Post update(Long id, String title, String content) {

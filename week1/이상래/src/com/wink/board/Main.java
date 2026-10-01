@@ -1,6 +1,7 @@
 package com.wink.board;
 
 import com.wink.board.domain.Post;
+import com.wink.board.exception.InvalidPostException;
 import com.wink.board.repository.*;
 import com.wink.board.service.PostService;
 
@@ -105,6 +106,11 @@ public class Main {
 
     private static Long inputId() {
         System.out.print("게시글 번호: ");
-        return Long.parseLong(sc.nextLine());
+        String input = sc.nextLine();
+        try {
+            return Long.parseLong(input);
+        } catch (NumberFormatException e) {
+            throw new InvalidPostException("게시글 번호는 숫자로 입력해주세요. 입력값=" + input);
+        }
     }
 }

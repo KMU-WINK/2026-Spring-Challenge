@@ -1,5 +1,7 @@
 package com.wink.board.domain;
 
+import com.wink.board.exception.InvalidPostException;
+
 import java.time.LocalDateTime;
 
 public class Post {
@@ -44,10 +46,10 @@ public class Post {
 
     private static void validateTitle(String title) {
         if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
+            throw new InvalidPostException("제목은 비어 있을 수 없습니다.");
         }
         if (title.length() > MAX_TITLE_LENGTH) {
-            throw new IllegalArgumentException("제목은 " + MAX_TITLE_LENGTH + "자 이하여야 합니다.");
+            throw new InvalidPostException("제목은 " + MAX_TITLE_LENGTH + "자 이하여야 합니다.");
         }
     }
 }
