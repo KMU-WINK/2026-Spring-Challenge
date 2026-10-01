@@ -7,10 +7,17 @@ import java.util.*;
 public class MemoryPostRepository implements PostRepository {
 
     private final Map<Long, Post> store = new HashMap<>();
+    private long sequence = 0L;
+
+    @Override
+    public Long nextId() {
+        return sequence + 1;
+    }
 
     @Override
     public Post save(Post post) {
         store.put(post.getId(), post);
+        sequence = Math.max(sequence, post.getId());
         return post;
     }
 

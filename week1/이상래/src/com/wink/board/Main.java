@@ -5,6 +5,7 @@ import com.wink.board.exception.InvalidPostException;
 import com.wink.board.repository.*;
 import com.wink.board.service.PostService;
 
+import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
@@ -15,8 +16,10 @@ public class Main {
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private static final Scanner sc = new Scanner(System.in);
+    // 저장소를 바꿀 때는 이 줄만 바꾼다. PostService는 그대로
+    // new PostService(new MemoryPostRepository());
     private static final PostService postService =
-            new PostService(new MemoryPostRepository());
+            new PostService(new FilePostRepository(Path.of("data", "posts.ser")));
 
     public static void main(String[] args) {
         while (true) {

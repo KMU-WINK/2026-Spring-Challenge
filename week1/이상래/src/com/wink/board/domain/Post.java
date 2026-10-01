@@ -2,10 +2,13 @@ package com.wink.board.domain;
 
 import com.wink.board.exception.InvalidPostException;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Post {
+// 파일에 객체를 통째로 저장(직렬화)하려면 Serializable을 구현해야 한다
+public class Post implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private static final int MAX_TITLE_LENGTH = 20;
 
     private Long id;
