@@ -1,6 +1,7 @@
 package com.wink.board;
 
 import com.wink.board.domain.Post;
+import com.wink.board.domain.User;
 import com.wink.board.exception.InvalidPostException;
 import com.wink.board.repository.*;
 import com.wink.board.service.PostService;
@@ -60,8 +61,7 @@ public class Main {
         String title = sc.nextLine();
         System.out.print("내용: ");
         String content = sc.nextLine();
-        System.out.print("작성자: ");
-        String writer = sc.nextLine();
+        User writer = inputUser("작성자: ");
 
         Post post = postService.create(title, content, writer);
         System.out.println("✅ 등록 완료! id=" + post.getId());
@@ -72,8 +72,7 @@ public class Main {
         String title = sc.nextLine();
         System.out.print("내용: ");
         String content = sc.nextLine();
-        System.out.print("작성자: ");
-        String writer = sc.nextLine();
+        User writer = inputUser("작성자: ");
 
         Post notice = postService.createNotice(title, content, writer);
         System.out.println("✅ 공지 등록 완료! id=" + notice.getId());
@@ -97,7 +96,7 @@ public class Main {
         }
         for (Post post : posts) {
             System.out.printf("[%d]%s (%s) ♥%d%n",
-                    post.getId(), post.displayTitle(), post.getWriter(), post.getLikeCount());
+                    post.getId(), post.displayTitle(), post.getWriter().getName(), post.getLikeCount());
         }
     }
 
@@ -105,7 +104,7 @@ public class Main {
         Post post = postService.findById(inputId());
         System.out.println("─────────────");
         System.out.println("제목: " + post.displayTitle());
-        System.out.println("작성자: " + post.getWriter());
+        System.out.println("작성자: " + post.getWriter().getName());
         System.out.println("내용: " + post.getContent());
         System.out.println("좋아요: " + post.getLikeCount());
         System.out.println("작성 시각: " + post.getCreatedAt().format(DATE_FORMAT));
@@ -127,7 +126,9 @@ public class Main {
     }
 
     private static void like() {
-        Post post = postService.like(inputId());
+        Long id = inputId();
+        User user = inputUser("누르는 사람: ");
+        Post post = postService.like(id, user);
         System.out.println("♥ 좋아요 " + post.getLikeCount() + "개");
     }
 
@@ -139,5 +140,10 @@ public class Main {
         } catch (NumberFormatException e) {
             throw new InvalidPostException("게시글 번호는 숫자로 입력해주세요. 입력값=" + input);
         }
+    }
+
+    private static User inputUser(String prompt) {
+        System.out.print(prompt);
+        return new User(sc.nextLine());
     }
 }
