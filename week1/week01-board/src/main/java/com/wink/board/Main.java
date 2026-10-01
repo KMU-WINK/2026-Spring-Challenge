@@ -1,12 +1,10 @@
 package com.wink.board;
 
 import com.wink.board.domain.Post;
-import com.wink.board.exceptionHandler.InvalidTitleException;
-import com.wink.board.exceptionHandler.PostNotFoundException;
+import com.wink.board.exception.InvalidTitleException;
 import com.wink.board.repository.*;
 import com.wink.board.service.PostService;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -94,7 +92,13 @@ public class Main {
     private static void update() {
         Long id = inputId();
         System.out.print("새 제목: ");
-        String title = sc.nextLine();
+        String title;
+        try {
+            title = sc.nextLine();
+            validateTitle(title);
+        } catch(InvalidTitleException e) {
+            throw new InvalidTitleException(e.getMessage());
+        }
         System.out.print("새 내용: ");
         String content = sc.nextLine();
         postService.update(id, title, content);

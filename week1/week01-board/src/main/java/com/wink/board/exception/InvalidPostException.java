@@ -1,4 +1,4 @@
-package com.wink.board.exceptionHandler;
+package com.wink.board.exception;
 
 public class InvalidPostException extends RuntimeException{
     public InvalidPostException(String message) {

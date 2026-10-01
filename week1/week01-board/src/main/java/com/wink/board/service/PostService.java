@@ -1,6 +1,7 @@
 package com.wink.board.service;
 
 import com.wink.board.domain.Post;
+import com.wink.board.exception.InvalidTitleException;
 import com.wink.board.repository.PostRepository;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class PostService {
 
     public Post create(String title, String content, String writer) {
         if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
+            throw new InvalidTitleException("제목은 비어 있을 수 없습니다.");
         }
         Post post = new Post(++sequence, title, content, writer);
         return postRepository.save(post);

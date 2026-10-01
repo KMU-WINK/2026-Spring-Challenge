@@ -1,6 +1,6 @@
 package com.wink.board.validator;
 
-import com.wink.board.exceptionHandler.InvalidTitleException;
+import com.wink.board.exception.InvalidTitleException;
 
 public final class ValidateParameters {
     private ValidateParameters() {
