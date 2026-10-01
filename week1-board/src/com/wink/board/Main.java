@@ -1,19 +1,28 @@
 package com.wink.board;
 
+import com.wink.board.domain.Notice;
 import com.wink.board.domain.Post;
 import com.wink.board.exception.InvalidPostException;
 import com.wink.board.repository.*;
 import com.wink.board.service.PostService;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
+    private static final FilePostRepository filePostRepository = new FilePostRepository();
     private static final PostService postService =
-            new PostService(new MemoryPostRepository());
+            new PostService(filePostRepository);
 
     public static void main(String[] args) {
+        Initialize();
+
         while (true) {
             printMenu();
             String input = sc.nextLine();
@@ -39,6 +48,33 @@ public class Main {
         }
     }
 
+    private static void Initialize(){
+        try{
+            Files.createDirectories(Path.of("./data"));
+        }catch (IOException e){
+            throw new RuntimeException("저장 폴더 생성 실패", e);
+        }
+
+        String[] posts = new String[0];
+
+        try{
+            String saved = Files.readString(Path.of("./data/posts.txt"));
+            if (saved.isBlank()) {
+                return;
+            }
+            posts = saved.split(" \\| ", -1);
+        }catch (IOException e){
+            System.out.println("파일 불러오기 실패. 파일을 새로 생성합니다.");
+            try{
+                Files.createFile(Path.of("./data/posts.txt"));
+            }catch (IOException createError){
+                throw new RuntimeException("파일 생성 실패", createError);
+            }
+        }
+
+        filePostRepository.restore(posts);
+    }
+
     private static void printMenu() {
         System.out.println("\n=== 커뮤니티 게시판 ===");
         System.out.println("1. 작성  2. 전체조회  3. 상세조회 4. 검색");
@@ -49,20 +85,15 @@ public class Main {
     private static void create() {
         System.out.print("제목: ");
         String title = sc.nextLine();
-
-        if (title == null || title.isBlank()) {
-            throw new InvalidPostException("제목은 비어 있을 수 없습니다.");
-        }
-        if (title.length() > 20){
-            throw new InvalidPostException("제목은 20자를 이하여야 합니다.");
-        }
-
         System.out.print("내용: ");
         String content = sc.nextLine();
         System.out.print("작성자: ");
         String writer = sc.nextLine();
+        System.out.print("공지 여부(Y/N): ");
+        //boolean isNotice = Objects.equals(sc.nextLine(), "Y") || Objects.equals(sc.nextLine(), "y");
+        boolean isNotice = "Y".equalsIgnoreCase(sc.nextLine());
 
-        Post post = postService.create(title, content, writer);
+        Post post = postService.create(title, content, writer, isNotice);
         System.out.println("✅ 등록 완료! id=" + post.getId());
     }
 
@@ -92,6 +123,7 @@ public class Main {
 
     private static void findAll() {
         List<Post> posts = postService.findAll();
+
         if (posts.isEmpty()) {
             System.out.println("게시글이 없습니다.");
             return;
@@ -104,7 +136,7 @@ public class Main {
 
     private static void findOne() {
         Post post = postService.findById(inputId());
-        System.out.println("─────────────");
+        System.out.println(post.getIsNotice()? "─────공지──────":"─────────────");
         System.out.println("제목: " + post.getTitle());
         System.out.println("작성자: " + post.getWriter());
         System.out.println("내용: " + post.getContent());
@@ -119,16 +151,19 @@ public class Main {
         System.out.print("새 내용: ");
         String content = sc.nextLine();
         postService.update(id, title, content);
+        filePostRepository.saveToFile();
         System.out.println("✅ 수정 완료!");
     }
 
     private static void delete() {
         postService.delete(inputId());
+        filePostRepository.saveToFile();
         System.out.println("✅ 삭제 완료!");
     }
 
     private static void like() {
         Post post = postService.like(inputId());
+        filePostRepository.saveToFile();
         System.out.println("♥ 좋아요 " + post.getLikeCount() + "개");
     }
 

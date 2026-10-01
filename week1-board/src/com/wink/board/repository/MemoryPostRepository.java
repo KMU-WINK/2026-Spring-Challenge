@@ -15,7 +15,13 @@ public class MemoryPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        return new ArrayList<>(store.values());
+        List<Post> posts = new ArrayList<>(store.values());
+
+        posts.sort(
+                Comparator.comparing(Post::getIsNotice).reversed()
+        );
+
+        return posts;
     }
 
     @Override

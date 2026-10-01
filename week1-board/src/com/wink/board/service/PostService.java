@@ -15,8 +15,14 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Post create(String title, String content, String writer) {
-        Post post = new Post(++sequence, title, content, writer);
+    public Post create(String title, String content, String writer, Boolean isNotice) {
+        if (title == null || title.isBlank()) {
+            throw new InvalidPostException("제목은 비어 있을 수 없습니다.");
+        }
+        if (title.length() > 20){
+            throw new InvalidPostException("제목은 20자 이하여야 합니다.");
+        }
+        Post post = new Post(++sequence, title, content, writer, isNotice);
         return postRepository.save(post);
     }
 
