@@ -7,7 +7,7 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private Long sequence = 0L;
-    private static final int MaxTitleLength = 20;
+    private static final int MAX_TITLE_LENGTH = 20;
 
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
@@ -18,8 +18,8 @@ public class PostService {
         if(title == null || title.isBlank()) {
             throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
         }
-        if(title.length() > MaxTitleLength) {
-            throw new IllegalArgumentException("제목은 " + MaxTitleLength +  "자를 넘을 수 없습니다.");
+        if(title.length() > MAX_TITLE_LENGTH) {
+            throw new IllegalArgumentException("제목은 " + MAX_TITLE_LENGTH +  "자를 넘을 수 없습니다.");
         }
         Post post = new Post(++sequence, title, content, writer);
         return postRepository.save(post);
@@ -34,8 +34,11 @@ public class PostService {
     }
 
     public Post update(Long id, String title, String content) {
-        if(title.length() > MaxTitleLength) {
-            throw new IllegalArgumentException("제목은 " + MaxTitleLength +  "자를 넘을 수 없습니다.");
+        if(title.length() > MAX_TITLE_LENGTH) {
+            throw new IllegalArgumentException("제목은 " + MAX_TITLE_LENGTH +  "자를 넘을 수 없습니다.");
+        }
+        if(title == null || title.isBlank()) {
+            throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
         }
         Post post = findById(id);
         post.update(title, content);
