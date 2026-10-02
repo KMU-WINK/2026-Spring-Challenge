@@ -208,7 +208,7 @@ AI에게 구현 방법이나 예시 코드를 받을 수는 있습니다. 다만
 | 주차 | 자료 |
 | --- | --- |
 | 1주차 | [노션 링크](https://app.notion.com/p/Spring-Boot-Challenge-Session-1-3cc79064d43d80ef848ace071c2b2c73) |
-| 2주차 | {노션 링크} |
+| 2주차 | [노션 링크](https://app.notion.com/p/Spring-Boot-Challenge-Session-2-3cc79064d43d80cbb2c9fafcb73a8653) |
 | 3주차 | {노션 링크} |
 | 4주차 | {노션 링크} |
 
