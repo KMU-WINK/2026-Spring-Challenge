@@ -1,0 +1,149 @@
+package com.wink.board;
+
+import com.wink.board.domain.Post;
+import com.wink.board.domain.User;
+import com.wink.board.exception.InvalidPostException;
+import com.wink.board.repository.*;
+import com.wink.board.service.PostService;
+
+import java.nio.file.Path;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+
+    private static final DateTimeFormatter DATE_FORMAT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    private static final Scanner sc = new Scanner(System.in);
+    // 저장소를 바꿀 때는 이 줄만 바꾼다. PostService는 그대로
+    // new PostService(new MemoryPostRepository());
+    private static final PostService postService =
+            new PostService(new FilePostRepository(Path.of("data", "posts.ser")));
+
+    public static void main(String[] args) {
+        while (true) {
+            printMenu();
+            String input = sc.nextLine();
+
+            try {
+                switch (input) {
+                    case "1" -> create();
+                    case "2" -> findAll();
+                    case "3" -> findOne();
+                    case "4" -> update();
+                    case "5" -> delete();
+                    case "6" -> like();
+                    case "7" -> search();
+                    case "8" -> createNotice();
+                    case "0" -> {
+                        System.out.println("종료합니다.");
+                        return;
+                    }
+                    default -> System.out.println("잘못된 입력입니다.");
+                }
+            } catch (Exception e) {
+                System.out.println("⚠️  " + e.getMessage());
+            }
+        }
+    }
+
+    private static void printMenu() {
+        System.out.println("\n=== 커뮤니티 게시판 ===");
+        System.out.println("1. 작성  2. 전체조회  3. 상세조회");
+        System.out.println("4. 수정  5. 삭제      6. 좋아요  7. 검색  8. 공지작성  0. 종료");
+        System.out.print("선택 > ");
+    }
+
+    private static void create() {
+        System.out.print("제목: ");
+        String title = sc.nextLine();
+        System.out.print("내용: ");
+        String content = sc.nextLine();
+        User writer = inputUser("작성자: ");
+
+        Post post = postService.create(title, content, writer);
+        System.out.println("✅ 등록 완료! id=" + post.getId());
+    }
+
+    private static void createNotice() {
+        System.out.print("제목: ");
+        String title = sc.nextLine();
+        System.out.print("내용: ");
+        String content = sc.nextLine();
+        User writer = inputUser("작성자: ");
+
+        Post notice = postService.createNotice(title, content, writer);
+        System.out.println("✅ 공지 등록 완료! id=" + notice.getId());
+    }
+
+    private static void findAll() {
+        printList(postService.findAll());
+    }
+
+    private static void search() {
+        System.out.print("검색어: ");
+        String keyword = sc.nextLine();
+        printList(postService.search(keyword));
+    }
+
+    // 전체 조회와 검색 결과가 같은 형식으로 출력되도록 묶음
+    private static void printList(List<Post> posts) {
+        if (posts.isEmpty()) {
+            System.out.println("게시글이 없습니다.");
+            return;
+        }
+        for (Post post : posts) {
+            System.out.printf("[%d]%s (%s) ♥%d%n",
+                    post.getId(), post.displayTitle(), post.getWriter().getName(), post.getLikeCount());
+        }
+    }
+
+    private static void findOne() {
+        Post post = postService.findById(inputId());
+        System.out.println("─────────────");
+        System.out.println("제목: " + post.displayTitle());
+        System.out.println("작성자: " + post.getWriter().getName());
+        System.out.println("내용: " + post.getContent());
+        System.out.println("좋아요: " + post.getLikeCount());
+        System.out.println("작성 시각: " + post.getCreatedAt().format(DATE_FORMAT));
+    }
+
+    private static void update() {
+        Long id = inputId();
+        System.out.print("새 제목: ");
+        String title = sc.nextLine();
+        System.out.print("새 내용: ");
+        String content = sc.nextLine();
+        postService.update(id, title, content);
+        System.out.println("✅ 수정 완료!");
+    }
+
+    private static void delete() {
+        postService.delete(inputId());
+        System.out.println("✅ 삭제 완료!");
+    }
+
+    private static void like() {
+        Long id = inputId();
+        User user = inputUser("누르는 사람: ");
+        Post post = postService.like(id, user);
+        System.out.println("♥ 좋아요 " + post.getLikeCount() + "개");
+    }
+
+    private static Long inputId() {
+        System.out.print("게시글 번호: ");
+        String input = sc.nextLine();
+        try {
+            return Long.parseLong(input);
+        } catch (NumberFormatException e) {
+            throw new InvalidPostException("게시글 번호는 숫자로 입력해주세요. 입력값=" + input);
+        }
+    }
+
+    private static User inputUser(String prompt) {
+        System.out.print(prompt);
+        return new User(sc.nextLine());
+    }
+}
