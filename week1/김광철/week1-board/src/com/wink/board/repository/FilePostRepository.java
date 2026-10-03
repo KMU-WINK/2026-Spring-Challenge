@@ -14,7 +14,7 @@ public class FilePostRepository implements PostRepository {
     private final Converter converter = new Converter();
 
     public FilePostRepository() {
-        this(Path.of("./data/posts.txt"));
+        this(Path.of("week1", "김광철", "week1-board", "data", "posts.txt"));
     }
 
     public FilePostRepository(Path path) {

@@ -80,8 +80,8 @@ public class Main {
         System.out.println("검색된 게시글");
 
         for (Post post : filteredPosts) {
-            System.out.printf("[%d]%s (%s) ♥%d%n",
-                    post.getId(), post.getTitle(), post.getWriter(), post.getLikeCount());
+            System.out.printf("[%d]%s%s (%s) ♥%d%n",
+                    post.getId(), noticeLabel(post), post.getTitle(), post.getWriter(), post.getLikeCount());
         }
 
 
@@ -95,15 +95,15 @@ public class Main {
             return;
         }
         for (Post post : posts) {
-            System.out.printf("[%d]%s (%s) ♥%d%n",
-                    post.getId(), post.getTitle(), post.getWriter(), post.getLikeCount());
+            System.out.printf("[%d]%s%s (%s) ♥%d%n",
+                    post.getId(), noticeLabel(post), post.getTitle(), post.getWriter(), post.getLikeCount());
         }
     }
 
     private static void findOne() {
         Post post = postService.findById(inputId());
-        System.out.println(post.getIsNotice()? "─────공지──────":"─────────────");
-        System.out.println("제목: " + post.getTitle());
+        System.out.println("─────────────");
+        System.out.println("제목: " + noticeLabel(post) + post.getTitle());
         System.out.println("작성자: " + post.getWriter());
         System.out.println("내용: " + post.getContent());
         System.out.println("좋아요: " + post.getLikeCount());
@@ -128,6 +128,10 @@ public class Main {
     private static void like() {
         Post post = postService.like(inputId());
         System.out.println("♥ 좋아요 " + post.getLikeCount() + "개");
+    }
+
+    private static String noticeLabel(Post post) {
+        return post.getIsNotice() ? "[ 공지 ] " : "";
     }
 
     private static Long inputId() {
