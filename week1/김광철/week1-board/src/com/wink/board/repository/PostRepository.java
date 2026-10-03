@@ -9,4 +9,4 @@ public interface PostRepository {
     List<Post> findAll();
     Optional<Post> findById(Long id);
     void deleteById(Long id);
-}
+}   

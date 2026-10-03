@@ -9,21 +9,27 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-    private Long sequence = 0L;   // id 자동 증가용
+    private long sequence; // 복원된 최대 ID부터 증가
 
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
+        this.sequence = postRepository.findAll().stream()
+                .mapToLong(Post::getId).max().orElse(0L);
     }
 
     public Post create(String title, String content, String writer, Boolean isNotice) {
+        validateTitle(title);
+        Post post = new Post(++sequence, title, content, writer, isNotice);
+        return postRepository.save(post);
+    }
+
+    private void validateTitle(String title) {
         if (title == null || title.isBlank()) {
             throw new InvalidPostException("제목은 비어 있을 수 없습니다.");
         }
         if (title.length() > 20){
             throw new InvalidPostException("제목은 20자 이하여야 합니다.");
         }
-        Post post = new Post(++sequence, title, content, writer, isNotice);
-        return postRepository.save(post);
     }
 
     public List<Post> findByTitle(String title) {
@@ -44,8 +50,9 @@ public class PostService {
 
     public Post update(Long id, String title, String content) {
         Post post = findById(id);
+        validateTitle(title);
         post.update(title, content);
-        return post;
+        return postRepository.save(post);
     }
 
     public void delete(Long id) {
@@ -56,6 +63,6 @@ public class PostService {
     public Post like(Long id) {
         Post post = findById(id);
         post.like();
-        return post;
+        return postRepository.save(post);
     }
 }

@@ -1,27 +1,20 @@
 package com.wink.board;
 
-import com.wink.board.domain.Notice;
 import com.wink.board.domain.Post;
 import com.wink.board.exception.InvalidPostException;
 import com.wink.board.repository.*;
 import com.wink.board.service.PostService;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
-    private static final FilePostRepository filePostRepository = new FilePostRepository();
     private static final PostService postService =
-            new PostService(filePostRepository);
+            new PostService(new FilePostRepository());
 
     public static void main(String[] args) {
-        Initialize();
 
         while (true) {
             printMenu();
@@ -46,33 +39,6 @@ public class Main {
                 System.out.println("⚠️  " + e.getMessage());
             }
         }
-    }
-
-    private static void Initialize(){
-        try{
-            Files.createDirectories(Path.of("./data"));
-        }catch (IOException e){
-            throw new RuntimeException("저장 폴더 생성 실패", e);
-        }
-
-        String[] posts = new String[0];
-
-        try{
-            String saved = Files.readString(Path.of("./data/posts.txt"));
-            if (saved.isBlank()) {
-                return;
-            }
-            posts = saved.split(" \\| ", -1);
-        }catch (IOException e){
-            System.out.println("파일 불러오기 실패. 파일을 새로 생성합니다.");
-            try{
-                Files.createFile(Path.of("./data/posts.txt"));
-            }catch (IOException createError){
-                throw new RuntimeException("파일 생성 실패", createError);
-            }
-        }
-
-        filePostRepository.restore(posts);
     }
 
     private static void printMenu() {
@@ -151,19 +117,16 @@ public class Main {
         System.out.print("새 내용: ");
         String content = sc.nextLine();
         postService.update(id, title, content);
-        filePostRepository.saveToFile();
         System.out.println("✅ 수정 완료!");
     }
 
     private static void delete() {
         postService.delete(inputId());
-        filePostRepository.saveToFile();
         System.out.println("✅ 삭제 완료!");
     }
 
     private static void like() {
         Post post = postService.like(inputId());
-        filePostRepository.saveToFile();
         System.out.println("♥ 좋아요 " + post.getLikeCount() + "개");
     }
 
