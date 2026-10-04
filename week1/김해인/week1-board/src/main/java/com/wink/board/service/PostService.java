@@ -13,15 +13,28 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    //제목 예외 처리 및 제목 글자 수 제한 구현 메소드
+    private void validateTitle(String title) {
+        if (title == null || title.isBlank()){
+            throw new IllegalArgumentException(
+                    "⚠ 제목은 비어 있을 수 없습니다."
+            );
+        }
+        if (title.length() > 20) {
+            throw new IllegalArgumentException(
+                    "⚠ 제목은 20글자를 초과할 수 없습니다."
+            );
+        }
+    }
     //게시글 작성기능
     public Post create(String title, String content, String writer) {
-        //제목 예외 처리
-        if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
-        }
+        //validateTitle 메소드로 제목 검증
+        validateTitle(title);
+
         //제목 문제 없는 경우 저장소로 넘겨서 게시물 저장
         Post post = new Post(++sequence, title, content, writer);
         return postRepository.save(post);
+
     }
 
     public List<Post> findAll() {
@@ -36,6 +49,7 @@ public class PostService {
     }
 
     public Post update(Long id, String title, String content) {
+        validateTitle(title);
         Post post = findById(id);
         post.update(title, content);
         return post;

@@ -5,6 +5,7 @@ import com.wink.board.repository.*;
 import com.wink.board.service.PostService;
 import java.util.List;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
 
 public class Main {
 
@@ -74,6 +75,11 @@ public class Main {
         System.out.println("작성자: " + post.getWriter());
         System.out.println("내용: " + post.getContent());
         System.out.println("좋아요: " + post.getLikeCount());
+        System.out.println("작성 시간: " +
+                post.getCreatedAt().format(
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                )
+        );
     }
 
     private static void update() {
