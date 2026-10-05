@@ -3,7 +3,6 @@ package com.wink.board.controller;
 import com.wink.board.dto.*;
 import com.wink.board.service.PostService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
-
 public class PostController {
 
     private final PostService postService;

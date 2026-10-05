@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Repository
 public class MemoryPostRepository implements PostRepository {
 
-    public final Map<Long, Post> store = new ConcurrentHashMap<>();
+    private final Map<Long, Post> store = new ConcurrentHashMap<>();
     private final AtomicLong sequence = new AtomicLong(0);
 
     @Override
@@ -20,7 +20,7 @@ public class MemoryPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        return new ArrayList<>(store.values());
+        return store.values().stream().sorted(Comparator.comparing(Post::getId)).toList();
     }
 
     @Override
