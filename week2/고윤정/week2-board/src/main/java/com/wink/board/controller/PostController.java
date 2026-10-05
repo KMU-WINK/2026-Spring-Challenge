@@ -25,8 +25,8 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> findAll() {
-        return ResponseEntity.ok(postService.findAll());
+    public ResponseEntity<List<PostResponse>> findAll(@RequestParam(required = false) String writer) {
+        return ResponseEntity.ok(postService.findAll(writer));
     }
 
     @GetMapping("/{id}")

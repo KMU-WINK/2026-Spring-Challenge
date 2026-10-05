@@ -24,6 +24,11 @@ public class MemoryPostRepository implements PostRepository {
     }
 
     @Override
+    public List<Post> findByWriter(String writer) {
+        return store.values().stream().filter(post -> post.getWriter().equals(writer)).sorted(Comparator.comparing(Post::getId)).toList();
+    }
+
+    @Override
     public Optional<Post> findById(Long id) {
         return Optional.ofNullable(store.get(id));
     }

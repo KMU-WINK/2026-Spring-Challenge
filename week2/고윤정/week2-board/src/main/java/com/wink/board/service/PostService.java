@@ -34,8 +34,16 @@ public class PostService {
         return PostResponse.from(post);
     }
 
-    public List<PostResponse> findAll() {
-        return postRepository.findAll().stream().map(PostResponse::from).toList();
+    public List<PostResponse> findAll(String writer) {
+        List<Post> posts;
+
+        if (writer == null || writer.isBlank()) {
+            posts = postRepository.findAll();
+        } else {
+            posts = postRepository.findByWriter(writer);
+        }
+
+        return posts.stream().map(PostResponse::from).toList();
     }
 
     public PostResponse findById(Long id) {
