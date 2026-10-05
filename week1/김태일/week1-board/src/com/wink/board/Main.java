@@ -2,8 +2,8 @@ package com.wink.board;
 
 import com.wink.board.domain.Post;
 import com.wink.board.domain.Notice;
-import com.wink.board.repository.MemoryPostRepository;
-import com.wink.board.repository.*;
+import com.wink.board.domain.User;
+import com.wink.board.repository.FilePostRepository;
 import com.wink.board.service.PostService;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +12,7 @@ public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
     private static final PostService postService =
-            new PostService(new MemoryPostRepository());
+            new PostService(new FilePostRepository());   // MemoryPostRepository로 바꿔도 PostService는 그대로
 
     public static void main(String[] args) {
         while (true) {
@@ -54,7 +54,7 @@ public class Main {
         System.out.print("내용: ");
         String content = sc.nextLine();
         System.out.print("작성자: ");
-        String writer = sc.nextLine();
+        User writer = new User(sc.nextLine());
 
         Post post = postService.create(title, content, writer);
         System.out.println("✅ 등록 완료! id=" + post.getId());
@@ -66,7 +66,7 @@ public class Main {
         System.out.print("내용: ");
         String content = sc.nextLine();
         System.out.print("작성자: ");
-        String writer = sc.nextLine();
+        User writer = new User(sc.nextLine());
 
         Post post = postService.createNotice(title, content, writer);
         System.out.println("✅ 공지 등록 완료! id=" + post.getId());
@@ -129,7 +129,10 @@ public class Main {
     }
 
     private static void like() {
-        Post post = postService.like(inputId());
+        Long id = inputId();
+        System.out.print("좋아요 누르는 사용자: ");
+        User user = new User(sc.nextLine());
+        Post post = postService.like(id, user);
         System.out.println("♥ 좋아요 " + post.getLikeCount() + "개");
     }
 

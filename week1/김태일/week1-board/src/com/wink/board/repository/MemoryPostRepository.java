@@ -7,25 +7,23 @@ import java.util.*;
 public class MemoryPostRepository implements PostRepository {
 
     private final Map<Long, Post> store = new HashMap<>();
+    private Long sequence = 0L;   // id 자동 증가용 (저장소가 책임)
 
     @Override
     public Post save(Post post) {
+        if (post.getId() == null) {
+            post.assignId(++sequence);
+        }
         store.put(post.getId(), post);
         return post;
     }
 
     @Override
     public List<Post> findAll() {
+        // 공지가 맨 위, 그 안에서는 id 순
         return store.values().stream()
-                .sorted((p1, p2) -> {
-                    if (p1 instanceof Notice && !(p2 instanceof Notice)) {
-                        return -1;
-                    }
-                    if (!(p1 instanceof Notice) && p2 instanceof Notice) {
-                        return 1;
-                    }
-                    return 0;
-                })
+                .sorted(Comparator.comparing((Post p) -> !(p instanceof Notice))
+                        .thenComparing(Post::getId))
                 .toList();
     }
 

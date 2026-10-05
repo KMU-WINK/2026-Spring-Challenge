@@ -1,8 +1,10 @@
 package com.wink.board.domain;
 
-public class Notice extends Post{
+public class Notice extends Post {
 
-    public Notice(Long id, String title, String content, String writer) {
-        super(id, title, content, writer);
+    private static final long serialVersionUID = 1L;
+
+    public Notice(String title, String content, User writer) {
+        super(title, content, writer);
     }
 }
