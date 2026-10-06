@@ -1,4 +1,4 @@
-package com.우리동아리.board.domain;
+package com.wink.board.domain;
 import java.time.LocalDateTime;
 
 public class Post {

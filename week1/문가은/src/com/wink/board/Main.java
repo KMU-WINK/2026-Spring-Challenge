@@ -1,14 +1,17 @@
-package com.우리동아리.board;
+package com.wink.board;
 
-import com.우리동아리.board.domain.Post;
-import com.우리동아리.board.repository.*;
-import com.우리동아리.board.service.PostService;
+import com.wink.board.domain.Post;
+import com.wink.board.repository.*;
+import com.wink.board.service.PostService;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final PostService postService =
             new PostService(new MemoryPostRepository());
 
@@ -75,7 +78,7 @@ public class Main {
         System.out.println("작성자: " + post.getWriter());
         System.out.println("내용: " + post.getContent());
         System.out.println("좋아요: " + post.getLikeCount());
-        System.out.println("작성 시간: " + post.getCreatedAt());
+        System.out.println("작성 시간: " + post.getCreatedAt().format(DATE_TIME_FORMATTER));
     }
 
     private static void update() {

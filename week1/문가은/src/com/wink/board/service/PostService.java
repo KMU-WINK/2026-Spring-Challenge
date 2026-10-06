@@ -1,7 +1,7 @@
-package com.우리동아리.board.service;
+package com.wink.board.service;
 
-import com.우리동아리.board.domain.Post;
-import com.우리동아리.board.repository.PostRepository;
+import com.wink.board.domain.Post;
+import com.wink.board.repository.PostRepository;
 import java.util.List;
 
 public class PostService {
@@ -15,9 +15,7 @@ public class PostService {
 
     public Post create(String title, String content, String writer) {
         validateTitle(title);
-        if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
-        }
+
         Post post = new Post(++sequence, title, content, writer);
         return postRepository.save(post);
     }
@@ -33,6 +31,8 @@ public class PostService {
     }
 
     public Post update(Long id, String title, String content) {
+        validateTitle(title);
+
         Post post = findById(id);
         post.update(title, content);
         return post;

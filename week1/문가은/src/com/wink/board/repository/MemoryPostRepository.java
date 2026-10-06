@@ -1,6 +1,6 @@
-package com.우리동아리.board.repository;
+package com.wink.board.repository;
 
-import com.우리동아리.board.domain.Post;
+import com.wink.board.domain.Post;
 import java.util.*;
 
 public class MemoryPostRepository implements PostRepository {
