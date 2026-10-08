@@ -30,9 +30,11 @@ public class PostService {
         return PostResponse.from(post);
     }
 
-    public List<PostResponse> findAll(String writer) {
+    public List<PostResponse> findAll(PostSearchRequest postSearchRequest) {
         return postRepository.findAll().stream()
-                .filter(post -> writer == null || writer.equals(post.getWriter()))
+                .filter(post -> postSearchRequest.write() == null || postSearchRequest.write().equals(post.getWriter()))
+                .skip((long) postSearchRequest.page() * postSearchRequest.size())
+                .limit(postSearchRequest.size())
                 .map(PostResponse::from)
                 .toList();
     }

@@ -27,8 +27,8 @@ public class PostController {
 
     // 전체 조회 → GET /api/posts
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PostResponse>>> findAll(@RequestParam(required = false) String writer) {
-        List<PostResponse> posts = postService.findAll(writer);
+    public ResponseEntity<ApiResponse<List<PostResponse>>> findAll(@Valid @ModelAttribute PostSearchRequest postSearchRequest) {
+        List<PostResponse> posts = postService.findAll(postSearchRequest);
         return ResponseEntity.ok(ApiResponse.success(posts));  // 200
     }
 
