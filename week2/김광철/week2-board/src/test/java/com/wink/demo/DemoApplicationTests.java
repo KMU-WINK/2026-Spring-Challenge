@@ -1,6 +1,7 @@
 package com.wink.demo;
 
 import com.wink.board.dto.PostSearchRequest;
+import com.wink.board.exception.PostNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ class DemoApplicationTests {
         } finally {
             service.delete(id);
         }
-        assertThrows(IllegalArgumentException.class, () -> service.findById(id));
+        assertThrows(PostNotFoundException.class, () -> service.findById(id));
     }
 
 }

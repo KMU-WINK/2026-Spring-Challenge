@@ -3,6 +3,7 @@ package com.wink.board.service;
 import com.wink.board.domain.Post;
 import com.wink.board.dto.*;
 import com.wink.board.exception.PostNotFoundException;
+import com.wink.board.repository.FilePostRepository;
 import com.wink.board.repository.MemoryPostRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -10,9 +11,9 @@ import java.util.List;
 @Service
 public class PostService {
 
-    private final MemoryPostRepository postRepository;
+    private final FilePostRepository postRepository;
 
-    public PostService(MemoryPostRepository postRepository) {
+    public PostService(FilePostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

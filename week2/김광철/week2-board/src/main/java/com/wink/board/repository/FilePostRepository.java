@@ -2,17 +2,21 @@ package com.wink.board.repository;
 
 import com.wink.board.domain.Post;
 import com.wink.board.service.Converter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.*;
 
+@Repository
 public class FilePostRepository implements PostRepository {
     private final Map<Long, Post> store = new HashMap<>();
     private final Path path;
     private final Converter converter = new Converter();
 
+    @Autowired
     public FilePostRepository() {
         this(defaultPath());
     }
@@ -57,8 +61,15 @@ public class FilePostRepository implements PostRepository {
     }
 
     @Override
+    public Long nextId() {
+        return store.keySet().stream()
+                .mapToLong(Long::longValue)
+                .max()
+                .orElse(0L) + 1;
+    }
+
+    @Override
     public Post save(Post post) {
-        // 신규 저장과 수정 모두 전달된 게시글의 ID를 유지한다.
         store.put(post.getId(), post);
         saveToFile();
         return post;
