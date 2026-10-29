@@ -100,9 +100,9 @@ git commit -m "feat: 1주차 콘솔 게시판 구현"
 git push origin feature/1주차-{본인이름}
 ```
 
-이후 GitHub에서 `Main`을 대상으로 PR을 생성하고, 아래 [PR 템플릿](#pr-템플릿)을 채워 제출합니다. 제출한 PR은 리뷰 후 `Main`에 머지됩니다.
+이후 GitHub에서 `main`을 대상으로 PR을 생성하고, 아래 [PR 템플릿](#pr-템플릿)을 채워 제출합니다. 제출한 PR은 리뷰 후 `main`에 머지됩니다.
 
-주차가 바뀌면 최신 `Main`을 받아서 새 브랜치를 만들고, `week2/{본인이름}/`처럼 새 폴더에서 시작하되 **직전 주차 폴더의 코드를 복사해와서 이어서 작업**해주세요.
+주차가 바뀌면 최신 `main`을 받아서 새 브랜치를 만들고, `week2/{본인이름}/`처럼 새 폴더에서 시작하되 **직전 주차 폴더의 코드를 복사해와서 이어서 작업**해주세요.
 
 ```bash
 git checkout main
@@ -208,7 +208,7 @@ AI에게 구현 방법이나 예시 코드를 받을 수는 있습니다. 다만
 | 주차 | 자료 |
 | --- | --- |
 | 1주차 | [노션 링크](https://app.notion.com/p/Spring-Boot-Challenge-Session-1-3cc79064d43d80ef848ace071c2b2c73) |
-| 2주차 | {노션 링크} |
+| 2주차 | [노션 링크](https://app.notion.com/p/Spring-Boot-Challenge-Session-2-3cc79064d43d80cbb2c9fafcb73a8653) |
 | 3주차 | {노션 링크} |
 | 4주차 | {노션 링크} |
 
