@@ -2,6 +2,7 @@ package com.wink.board.controller;
 
 import com.wink.board.dto.*;
 import com.wink.board.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class PostController {
 
     // 게시글 작성 → POST /api/posts
     @PostMapping
-    public ResponseEntity<PostResponse> create(@RequestBody PostCreateRequest request) {
+    public ResponseEntity<PostResponse> create(@Valid @RequestBody PostCreateRequest request) {
         PostResponse response = postService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);  // 201
     }
