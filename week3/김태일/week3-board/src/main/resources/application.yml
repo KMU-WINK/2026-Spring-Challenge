@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: local              # application-local.yml도 같이 읽기
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/board
+    username: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
