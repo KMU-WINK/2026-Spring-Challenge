@@ -69,6 +69,7 @@ public class PostService {
         return PostResponse.from(post);
     }
 
+
     private Post getPost(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
